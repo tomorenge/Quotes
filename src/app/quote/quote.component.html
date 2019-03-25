@@ -4,10 +4,18 @@
   <div class="display" *ngFor="let quote of quotes ; let i =index">
     <p>{{quote.name}}</p>
     <p>{{quote.date |date}}</p>
-    <p>{{quote.upVote}}</p>
+
+    <i class="fas fa-thumbs-up"></i>
+      <p>{{quote.upVote}}</p>
+
+    <i class="fas fa-thumbs-down"></i>
     <p>{{quote.downVote}}</p>
 
+    <button class="btn btn-danger" (click)='toggleDetail(i)'> Show Details </button>
+    <div *ngIf="quote.showDescription">
 
     <app-quote-detail [quote]='quote'></app-quote-detail>
+    </div>
+
 
 </div>
