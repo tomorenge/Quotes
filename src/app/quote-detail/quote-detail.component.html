@@ -2,4 +2,9 @@
 <p> Date:   {{ quote.date |dateCount }} </p>
 <p> Author:  {{ quote.author }} </p>
 <p> Submitted By: {{  quote.submittedBy}} </p>
+<i class="fas fa-thumbs-up"(click)="upVote=upVote+1"  ></i>
+  <p>{{upVote}}</p>
+
+<i class="fas fa-thumbs-down" (click)="downVote=downVote+1" ></i>
+<p>{{downVote}}</p>
 </div>

@@ -10,6 +10,8 @@ import {Quote} from '../quote'
 export class QuoteDetailComponent implements OnInit {
   @Input() quote:Quote;
 
+  upVote=0;
+  downVote=0;
   constructor() { }
 
   ngOnInit() {
