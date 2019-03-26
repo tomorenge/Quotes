@@ -10,8 +10,10 @@
     <div *ngIf="quote.showDescription">
 
     <app-quote-detail [quote]='quote'></app-quote-detail>
-  
-    </div>
 
+
+    </div>
+    <!-- <app-quotes-form (addQuote)="addNewQuote($event)"></app-quotes-form> -->
 
 </div>
+<app-quotes-form></app-quotes-form>
