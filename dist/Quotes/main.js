@@ -129,6 +129,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _quote_detail_quote_detail_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./quote-detail/quote-detail.component */ "./src/app/quote-detail/quote-detail.component.ts");
 /* harmony import */ var _quote_quote_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./quote/quote.component */ "./src/app/quote/quote.component.ts");
 /* harmony import */ var _date_count_pipe__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./date-count.pipe */ "./src/app/date-count.pipe.ts");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+
 
 
 
@@ -152,7 +154,8 @@ var AppModule = /** @class */ (function () {
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
-                _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"]
+                _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
+                _angular_forms__WEBPACK_IMPORTED_MODULE_9__["FormsModule"],
             ],
             providers: [],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
@@ -324,7 +327,7 @@ module.exports = "body{\n  font-family:sans-serif;\n}\n\n/*# sourceMappingURL=da
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n  <h1> {{ title }} </h1>\n\n  <div class=\"display\" *ngFor=\"let quote of quotes ; let i =index\">\n    <p>{{quote.name}}</p>\n    <p>{{quote.date |date}}</p>\n\n\n    <button class=\"btn btn-danger\" (click)='toggleDetail(i)'> Show Details </button>\n    <div *ngIf=\"quote.showDescription\">\n\n    <app-quote-detail [quote]='quote'></app-quote-detail>\n    </div>\n\n\n</div>\n"
+module.exports = "\n  <h1> {{ title }} </h1>\n\n  <div class=\"display\" *ngFor=\"let quote of quotes ; let i =index\">\n    <p>{{quote.name}}</p>\n    <p>{{quote.date |date}}</p>\n\n\n    <button class=\"btn btn-danger\" (click)='toggleDetail(i)'> Show Details </button>\n    <div *ngIf=\"quote.showDescription\">\n\n    <app-quote-detail [quote]='quote'></app-quote-detail>\n\n\n    </div>\n\n\n</div>\n<app-quotes-form (addQuote)=\"addNewQuote($event)\"></app-quotes-form>\n"
 
 /***/ }),
 
@@ -346,13 +349,19 @@ __webpack_require__.r(__webpack_exports__);
 
 var QuoteComponent = /** @class */ (function () {
     function QuoteComponent() {
-        this.title = "Welcome to Quotes";
+        this.title = "Your daily dose of Quotes";
         this.quotes = [
             new _quote__WEBPACK_IMPORTED_MODULE_2__["Quote"](1, "Let the people mask you such that you become one with the crowd.", "Al muamin", "leo", 0, 0, new Date(2019, 2, 23)),
             new _quote__WEBPACK_IMPORTED_MODULE_2__["Quote"](2, "Do we bend the rules in service to a greater good? And if we do, what does it say of us?", "Altaïr's Codex", "kevo", 0, 0, new Date()),
             new _quote__WEBPACK_IMPORTED_MODULE_2__["Quote"](3, "For if nothing is true, then why believe anything? And if everything is permitted... why not chase every desire?", "Edward Kenway to the Mentor Ah Tabai, 1722", "Tom", 0, 0, new Date())
         ];
     }
+    QuoteComponent.prototype.addNewQuote = function (quote) {
+        var quoteLength = this.quotes.length;
+        quote.id = quoteLength + 1;
+        quote.completeDate = new Date(quote.completeDate);
+        this.quotes.push(quote);
+    };
     QuoteComponent.prototype.toggleDetail = function (index) {
         this.quotes[index].showDescription = !this.quotes[index].showDescription;
     };
@@ -390,7 +399,7 @@ module.exports = "\n.formgroup{\n  font-size: 30px;\n}\n\n/*# sourceMappingURL=d
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1>Post quote</h1>\n<div class=\"container-fluid\">\n    <div class=\"row\">\n        <form>\n            <div class=\"form-group\">\n\n                <label for=\"name\">Quote</label>\n                <input type=\"text\" required class=\"form-control\" id=\"name\">\n\n            </div>\n            <div class=\"form-group\">\n\n                <label for=\"description\">Author</label>\n                <textarea class=\"form-control\" id=\"description\" rows=\"4\" required></textarea>\n\n            </div>\n            <div class=\"form-group\">\n                <label for=\"complete\">Name</label>\n                <input type='date' id=\"complete\" required>\n\n            </div>\n            <button type=\"Submit\" class=\"btn btn-primary \">Publish Quote</button><br>\n\n        </form>\n    </div>\n</div>\n"
+module.exports = "<h1>Post quote</h1>\n<div class=\"container-fluid\">\n    <div class=\"row\">\n        <form (ngSubmit)='submitQuote()' #quoteForm='ngForm'>\n            <div class=\"form-group\">\n\n                <label for=\"name\">Quote</label>\n                <input type=\"text\" required class=\"form-control\" id=\"name\" [(ngModel)]=\"newQuote.name\" name=\"name\" #name =\"ngModel\">\n\n                <div [hidden]=\"name.valid || name.pristine\" class=\"alert alert-danger\">\n                    <p> Name is Required</p>\n                </div>\n\n            </div>\n\n\n            <div class=\"form-group\">\n\n                <label for=\"description\">Author</label>\n                <textarea class=\"form-control\" id=\"description\" rows=\"4\" [(ngModel)]=\"newQuote.author\" name=\"author\"  #author =\"ngModel\" required>\n                </textarea>\n\n                <div [hidden]=\"author.valid || author.pristine\" class=\"alert alert-danger\">\n                  <p> Author is Required</p>\n                  </div>\n            </div>\n\n\n            <div class=\"form-group\">\n                <label for=\"complete\">Name</label>\n                <input type='text' id=\"complete\" [(ngModel)]=\"newQuote.submittedBy\" name=\"submittedBy\"  #submittedBy =\"ngModel\" required>\n\n                <div [hidden]=\"submittedBy.valid || submittedBy.pristine\" class=\"alert alert-danger\">\n                  <p> Submitted By is Required</p>\n                  </div>\n            </div>\n            <button type=\"submit\" class=\"btn btn-primary \">Publish Quote</button>\n\n        </form>\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -406,13 +415,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuotesFormComponent", function() { return QuotesFormComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _quote__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../quote */ "./src/app/quote.ts");
+
 
 
 var QuotesFormComponent = /** @class */ (function () {
     function QuotesFormComponent() {
+        this.newQuote = new _quote__WEBPACK_IMPORTED_MODULE_2__["Quote"](0, "", "", "", 0, 0, new Date());
+        this.addQuote = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
     }
+    QuotesFormComponent.prototype.submitQuote = function () {
+        this.addQuote.emit(this.newQuote);
+        console.log(this.newQuote);
+    };
     QuotesFormComponent.prototype.ngOnInit = function () {
     };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], QuotesFormComponent.prototype, "addQuote", void 0);
     QuotesFormComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-quotes-form',
