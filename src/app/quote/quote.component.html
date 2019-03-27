@@ -1,19 +1,43 @@
-
+<div class="main-page">
   <h1> {{ title }} </h1>
 
-  <div class="display" *ngFor="let quote of quotes ; let i =index">
-    <p>{{quote.name}}</p>
-    <p>{{quote.date |date}}</p>
+<div class="quotes" *ngFor="let quote of quotes ; let i =index">
+  <div class="display" >
+      <p>{{quote.name}}</p>
+      <p>{{quote.date |date}}</p>
+      <button class="btn btn-danger" (click)='toggleDetail(i)'> Show Details </button>
+
+      <div *ngIf="quote.showDescription">
+        <app-quote-detail [quote]='quote'></app-quote-detail>
+      </div>
 
 
-    <button class="btn btn-danger" (click)='toggleDetail(i)'> Show Details </button>
-    <div *ngIf="quote.showDescription">
-
-    <app-quote-detail [quote]='quote'></app-quote-detail>
-
-
-    </div>
-
-
-</div>
+  </div>
+  </div>
 <app-quotes-form (addQuote)="addNewQuote($event)"></app-quotes-form>
+</div>
+
+
+
+
+
+
+
+
+<!-- <div class="main-page">
+  <h1> {{ title }} </h1>
+
+
+  <div class="display" *ngFor="let quote of quotes ; let i =index">
+      <p>{{quote.name}}</p>
+      <p>{{quote.date |date}}</p>
+      <button class="btn btn-danger" (click)='toggleDetail(i)'> Show Details </button>
+
+      <div *ngIf="quote.showDescription">
+        <app-quote-detail [quote]='quote'></app-quote-detail>
+      </div>
+
+
+  </div>
+<app-quotes-form (addQuote)="addNewQuote($event)"></app-quotes-form>
+</div> -->
